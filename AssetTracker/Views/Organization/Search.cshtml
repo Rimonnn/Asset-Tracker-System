@@ -1,0 +1,101 @@
+﻿@using AssetTracker.Models
+
+
+@{
+    ViewBag.Title = "Search";
+}
+
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Search</title>
+</head>
+<body>
+    <div>
+        <p>
+            Search Result(s)
+        </p>
+        <p>
+            <a href="@Url.Action("Create", "Organization")">Create</a>
+        </p>
+
+        <form action="Search" method="POST">
+            <p>
+                Name: <input type="text" name="OrganizationName" id="OrganizationName" />
+            </p>
+            <p>
+                ShortName: <input type="text" name="OrganizationBranchCode" id="OrganizationCode" />
+            </p>
+           
+
+
+            <p>
+                <input type="submit" value="Show" />
+            </p>
+        </form>
+        @if (Model != null )
+        {
+            <table id="organizationTable" class="table table-striped table-bordered table-hover">
+                <thead>
+                    <tr>
+                        <th>
+                            Organization Name
+                        </th>
+                        <th>
+                            Organization Code
+                        </th>
+                        
+                        
+                    </tr>
+                </thead>
+                <tbody>
+                
+                </tbody>
+                <tbody>
+                
+                </tbody>
+
+            </table>
+        }
+    </div>
+</body>
+</html>
+@section scripts{
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+
+            $("#organizationTable").dataTable({
+                ajax: {
+                    url: "/Organization/GetAllOrganization",
+                    type: "POST",
+                    dataType: "JSON"
+                   
+                    
+                },
+                serverSide: "true",
+                processing: "true",
+                columns: [
+                    {
+                        data: "OrganizationName"
+                    },
+                    {
+                        data: "OrganizationBranchCode"
+                    },
+                   
+                    {
+                        render: function (data, type, organization) {
+                            return "<a href='/organization/edit/" + organization.Id + "'> Edit</a>";
+                        }
+                    }
+                ]
+
+            });
+
+
+        });
+    </script>
+}
